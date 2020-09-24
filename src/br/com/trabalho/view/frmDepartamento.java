@@ -10,6 +10,7 @@ import br.com.trabalho.dao.FuncionarioDAO;
 import br.com.trabalho.model.Departamento;
 import br.com.trabalho.model.Funcionario;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -56,6 +57,12 @@ public class frmDepartamento extends javax.swing.JFrame {
         tbl_func_funcs.getColumnModel().getColumn(0).setPreferredWidth(100);
         tbl_func_funcs.getColumnModel().getColumn(1).setPreferredWidth(150);
         tbl_func_funcs.getColumnModel().getColumn(2).setPreferredWidth(150);
+
+        if (totalFunc() >= 1) {
+            btn_func_pesquisar.setEnabled(true);
+            txt_func_pesuisar.setEnabled(true);
+        }
+
     }
 
     public void LoadCBDep() {
@@ -85,6 +92,8 @@ public class frmDepartamento extends javax.swing.JFrame {
         modoFunc = "Navegar";
         ManipulaInterfaceDep();
         ManipulaInterfaceFunc();
+        btn_func_pesquisar.setEnabled(false);
+        txt_func_pesuisar.setEnabled(false);
     }
 
     public void ManipulaInterfaceDep() {
@@ -237,6 +246,10 @@ public class frmDepartamento extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_func_funcs = new javax.swing.JTable();
         btn_func_sair = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        txt_func_pesuisar = new javax.swing.JTextField();
+        btn_func_pesquisar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -542,6 +555,40 @@ public class frmDepartamento extends javax.swing.JFrame {
             }
         });
 
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Pesquisar"));
+
+        jLabel6.setText("Nome:");
+
+        btn_func_pesquisar.setText("Pesquisar");
+        btn_func_pesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_func_pesquisarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txt_func_pesuisar)
+                .addGap(18, 18, 18)
+                .addComponent(btn_func_pesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txt_func_pesuisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_func_pesquisar)))
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -559,7 +606,8 @@ public class frmDepartamento extends javax.swing.JFrame {
                         .addComponent(btn_func_excluir, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_func_sair, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 8, Short.MAX_VALUE)))
+                        .addGap(0, 8, Short.MAX_VALUE))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -575,6 +623,8 @@ public class frmDepartamento extends javax.swing.JFrame {
                     .addComponent(btn_func_sair))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -593,8 +643,7 @@ public class frmDepartamento extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
-                .addContainerGap())
+                .addComponent(jTabbedPane1))
         );
 
         pack();
@@ -718,7 +767,7 @@ public class frmDepartamento extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_func_excluirActionPerformed
 
     private void btn_func_salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_func_salvarActionPerformed
-     int matricula = totalFunc() + 1;
+        int matricula = totalFunc() + 1;
 
         if (modoFunc.equals("Novo")) {
             int indexcb = cb_func_deps.getSelectedIndex();
@@ -732,6 +781,9 @@ public class frmDepartamento extends javax.swing.JFrame {
 
                 daoFunc.addFuncionario(F);
                 daoDep.editarDepartamento(indexcb - 1).addFunc(F);
+                btn_func_pesquisar.setEnabled(true);
+                txt_func_pesuisar.setEnabled(true);
+
             }
         } else if (modoFunc.equals("Editar")) {
             int index = tbl_func_funcs.getSelectedRow();
@@ -739,7 +791,7 @@ public class frmDepartamento extends javax.swing.JFrame {
             int matedit = Integer.parseInt(txt_func_mat.getText());
             daoFunc.editarFuncionario(index).setMatricula(matedit);
             daoFunc.editarFuncionario(index).setNome(txt_func_nome.getText());
-            daoFunc.editarFuncionario(index).setDep(daoDep.editarDepartamento(indexcb-1));         
+            daoFunc.editarFuncionario(index).setDep(daoDep.editarDepartamento(indexcb - 1));
         }
 
         LoadTableFunc();
@@ -781,6 +833,32 @@ public class frmDepartamento extends javax.swing.JFrame {
             repaint();
         }
     }//GEN-LAST:event_btn_func_sairActionPerformed
+
+    private void btn_func_pesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_func_pesquisarActionPerformed
+        // TODO add your handling code here:
+        String idStr = txt_func_pesuisar.getText();
+
+        if (totalFunc() >= 1) {
+            if (txt_func_pesuisar.getText().length() > 0) {
+                Funcionario func = new Funcionario();
+                try {
+                    func = daoFunc.pequisaFuncionario(idStr, daoFunc.listaGeral());
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Aconteceu um erro:" + e);
+                }
+                if (func != null) {
+                                       
+                    txt_func_mat.setText(String.valueOf(func.getMatricula()));
+                    txt_func_nome.setText(func.getNome());
+                    cb_func_deps.setSelectedItem(func.getDep());
+                    modoFunc = "Novo";
+                    ManipulaInterfaceFunc();
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Você não tem nenhum Funcionario cadastrado!");
+        }
+    }//GEN-LAST:event_btn_func_pesquisarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -828,6 +906,7 @@ public class frmDepartamento extends javax.swing.JFrame {
     private javax.swing.JButton btn_func_editar;
     private javax.swing.JButton btn_func_excluir;
     private javax.swing.JButton btn_func_novo;
+    private javax.swing.JButton btn_func_pesquisar;
     private javax.swing.JButton btn_func_sair;
     private javax.swing.JButton btn_func_salvar;
     private javax.swing.JComboBox cb_func_deps;
@@ -836,10 +915,12 @@ public class frmDepartamento extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
@@ -849,5 +930,6 @@ public class frmDepartamento extends javax.swing.JFrame {
     private javax.swing.JTextField txt_dep_nome;
     private javax.swing.JTextField txt_func_mat;
     private javax.swing.JTextField txt_func_nome;
+    private javax.swing.JTextField txt_func_pesuisar;
     // End of variables declaration//GEN-END:variables
 }

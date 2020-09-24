@@ -7,6 +7,8 @@ package br.com.trabalho.dao;
 
 import br.com.trabalho.model.Funcionario;
 import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -35,6 +37,14 @@ public class FuncionarioDAO {
     public ArrayList<Funcionario> listaGeral() {
         return ListaFunc;
     }
-    
    
+    public Funcionario pequisaFuncionario(String nome, List<Funcionario> listaFuncionario) {
+        for (int i = 0; i < listaFuncionario.size(); i++) {
+            if(listaFuncionario.get(i).getNome().equals(nome)) {
+                return listaFuncionario.get(i);               
+            }
+        }
+        return null;
+    }
+
 }
